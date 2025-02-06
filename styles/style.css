@@ -3,3 +3,45 @@ body{
     font-size: 1rem;
     background-color: rgb(0, 153, 255);
 }
+nav{
+    padding: 7px;
+    background-color: rgba(0, 51, 102, 0.6);
+}
+#menu-icon {
+    padding: 5px;
+    margin-bottom: 5px;
+    height: 40px;
+    width: 40px;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+#menu-icon li {
+    height: 4px;
+    width: 30px;
+    border-radius: 8px;
+    background-color: white;
+    transition: 0.5s;
+}
+#user-menu {
+    background-color: #fefefe;
+}
+#user-menu li {
+    padding: 10px 0;
+    text-align: center;
+    border-bottom: 1px solid #b0afaf;
+}
+#user-menu li:last-child {
+    border-bottom: none;
+}
+#user-menu a {
+    color: #333;
+}
+#user-menu li:hover{
+    background-color: rgb(247, 215, 52);
+    font-weight: bold;
+    transform: scaley(1.3);
+}
