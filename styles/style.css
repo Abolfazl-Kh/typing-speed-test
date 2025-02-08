@@ -6,6 +6,11 @@ body{
 nav{
     padding: 7px;
     background-color: rgba(0, 51, 102, 0.6);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
 }
 #menu-icon {
     padding: 5px;
@@ -38,6 +43,16 @@ nav{
 }
 #user-menu {
     background-color: #fefefe;
+    height: 200px;
+    width: 100%;
+    position: absolute;
+    top: 70px;
+    right: -100%;
+    transition: 0.5s;
+    z-index: 99;
+}
+#user-menu.d-block {
+    right: 0;
 }
 #user-menu li {
     padding: 10px 0;
