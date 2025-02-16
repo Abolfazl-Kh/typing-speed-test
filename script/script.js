@@ -34,4 +34,19 @@ function textFaind() {
     mainText = texts[randomTextNum]
     textHolder.innerHTML = mainText
 }
+function textValidation() {
+    let typedText = typingBoxElm.value
+    let finalText = mainText.substring(0, typedText.length)
+    if (typedText == finalText) {
+        typingBoxElm.style.border = '3px solid  rgb(247, 215, 52)'
+    } else {
+        typingBoxElm.style.border = '3px solid  rgb(247, 52, 52)'
+    }
+    if (typedText === mainText) {
+        typingBoxElm.style.border = '3px solid rgba(52, 247, 117)'
+        clearInterval(stopwatch)
+    }
+}
+
 window.addEventListener('load', textFaind())
+typingBoxElm.addEventListener('keyup', textValidation)
