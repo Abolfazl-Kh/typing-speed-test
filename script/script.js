@@ -14,9 +14,12 @@ const userMenu = document.getElementById('user-menu');
 const userMenuItems = document.querySelectorAll("#user-menu a")
 const textHolder = document.getElementById("random-text")
 const typingBoxElm = document.getElementById("typing-box")
+const timerConter = document.getElementById("timer")
+
 let mainText = null
 let randomTextNum = Math.floor(Math.random() * texts.length);
 let isFirstType = true
+let stopwatch;
 
 // Toggle menu on click
 menuIcon.addEventListener('click', () => {
@@ -26,7 +29,7 @@ menuIcon.addEventListener('click', () => {
 //Alert users when clicking on menu links (for unavailable sections)
 userMenuItems.forEach(link => {
     link.addEventListener("click", (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         alert("This section is not available yet!");
     });
 });
@@ -34,7 +37,23 @@ function textFaind() {
     mainText = texts[randomTextNum]
     textHolder.innerHTML = mainText
 }
+function timer() {
+    let miliSeconds = 0;
+    let second = 0;
+    stopwatch = setInterval(() => {
+        miliSeconds++;
+        if (miliSeconds > 99) {
+            second++;
+            miliSeconds = 0;
+        }
+        timerConter.innerHTML = `${second.toString().padStart(2, "0")}:${miliSeconds.toString().padStart(2, "0")}`;
+    }, 10);
+}
 function textValidation() {
+    if (isFirstType) {
+        timer()
+        isFirstType = false
+    }
     let typedText = typingBoxElm.value
     let finalText = mainText.substring(0, typedText.length)
     if (typedText == finalText) {
