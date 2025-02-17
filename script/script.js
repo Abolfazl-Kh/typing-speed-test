@@ -15,10 +15,16 @@ const userMenuItems = document.querySelectorAll("#user-menu a")
 const textHolder = document.getElementById("random-text")
 const typingBoxElm = document.getElementById("typing-box")
 const timerConter = document.getElementById("timer")
+const modalElem = document.getElementById("result")
+const wordCount = document.getElementById("word-count")
+const elapsedTime = document.getElementById("elapsed-time")
+const resultText = document.getElementById("result-text")
 
 let mainText = null
 let randomTextNum = Math.floor(Math.random() * texts.length);
 let isFirstType = true
+let miliSeconds = 0;
+let seconds = 0;
 let stopwatch;
 
 // Toggle menu on click
@@ -38,16 +44,23 @@ function textFaind() {
     textHolder.innerHTML = mainText
 }
 function timer() {
-    let miliSeconds = 0;
-    let second = 0;
     stopwatch = setInterval(() => {
         miliSeconds++;
         if (miliSeconds > 99) {
-            second++;
+            seconds++;
             miliSeconds = 0;
         }
-        timerConter.innerHTML = `${second.toString().padStart(2, "0")}:${miliSeconds.toString().padStart(2, "0")}`;
+        timerConter.innerHTML = `${seconds.toString().padStart(2, "0")}:${miliSeconds.toString().padStart(2, "0")}`;
     }, 10);
+}
+function showresult() {
+    let countOfDigits = mainText.replace(/[.,!?]/g, "").trim().split(/\s+/).length;
+    wordCount.innerHTML = `${countOfDigits} <br/> words.`
+    elapsedTime.innerHTML = `${seconds}:${miliSeconds} <br/> seconds.`
+    resultText.innerHTML = `You typed ${countOfDigits} words in ${seconds} seconds and ${miliSeconds} mili seconds.`
+    if (modalElem.style.display !== 'block') {
+        modalElem.style.display = 'block';
+    }    
 }
 function textValidation() {
     if (isFirstType) {
@@ -64,6 +77,7 @@ function textValidation() {
     if (typedText === mainText) {
         typingBoxElm.style.border = '3px solid rgba(52, 247, 117)'
         clearInterval(stopwatch)
+        showresult()
     }
 }
 
