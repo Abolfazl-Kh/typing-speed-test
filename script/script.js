@@ -20,9 +20,9 @@ const wordCount = document.getElementById("word-count")
 const elapsedTime = document.getElementById("elapsed-time")
 const resultText = document.getElementById("result-text")
 const closeModal = document.querySelector(".close-btn")
+const resetBtn = document.getElementById("reset")
 
 let mainText = null
-let randomTextNum = Math.floor(Math.random() * texts.length);
 let isFirstType = true
 let miliSeconds = 0;
 let seconds = 0;
@@ -41,6 +41,7 @@ userMenuItems.forEach(link => {
     });
 });
 function textFaind() {
+    let randomTextNum = Math.floor(Math.random() * texts.length);
     mainText = texts[randomTextNum]
     textHolder.innerHTML = mainText
 }
@@ -61,7 +62,7 @@ function showresult() {
     resultText.innerHTML = `You typed ${countOfDigits} words in ${seconds} seconds and ${miliSeconds} mili seconds.`
     if (modalElem.style.display !== 'block') {
         modalElem.style.display = 'block';
-    }    
+    }
 }
 function textValidation() {
     if (isFirstType) {
@@ -81,10 +82,22 @@ function textValidation() {
         showresult()
     }
 }
-function hidModal(){
+function hidModal() {
     modalElem.style.display = 'none'
+}
+function refresh() {
+    textFaind()
+    typingBoxElm.value = ''
+    clearInterval(stopwatch)
+    isFirstType = true
+    seconds = 0
+    miliSeconds = 0
+    timerConter.innerHTML = '00:00'
+    typingBoxElm.style.border = '3px solid  rgb(247, 215, 52)'
 }
 
 window.addEventListener('load', textFaind())
 typingBoxElm.addEventListener('keyup', textValidation)
+typingBoxElm.addEventListener('paste', (e)=>{e.preventDefault()})
 closeModal.addEventListener('click', hidModal)
+resetBtn.addEventListener('click', refresh)
