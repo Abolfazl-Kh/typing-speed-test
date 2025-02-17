@@ -19,6 +19,7 @@ const modalElem = document.getElementById("result")
 const wordCount = document.getElementById("word-count")
 const elapsedTime = document.getElementById("elapsed-time")
 const resultText = document.getElementById("result-text")
+const closeModal = document.querySelector(".close-btn")
 
 let mainText = null
 let randomTextNum = Math.floor(Math.random() * texts.length);
@@ -80,6 +81,10 @@ function textValidation() {
         showresult()
     }
 }
+function hidModal(){
+    modalElem.style.display = 'none'
+}
 
 window.addEventListener('load', textFaind())
 typingBoxElm.addEventListener('keyup', textValidation)
+closeModal.addEventListener('click', hidModal)
