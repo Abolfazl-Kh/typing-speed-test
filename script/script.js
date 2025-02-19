@@ -94,6 +94,9 @@ function refresh() {
     miliSeconds = 0
     timerConter.innerHTML = '00:00'
     typingBoxElm.style.border = '3px solid  rgb(247, 215, 52)'
+    if (modalElem.style.display == 'block') {
+        modalElem.style.display = 'none';
+    }
 }
 
 window.addEventListener('load', textFaind())
