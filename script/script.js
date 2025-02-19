@@ -1,17 +1,126 @@
-// Get elements
+// List of sample texts for typing test
+const texts = [
+    "The quick brown fox jumps over the lazy dog.",
+    "Coding is like humor. If you have to explain it, it’s bad.",
+    "Simplicity is the soul of efficiency.",
+    "Life is short. Code more.",
+    "First, solve the problem. Then, write the code.",
+    "Talk is cheap. Show me the code.",
+    "Before software can be reusable it first has to be usable."
+];
+
+// Get elements from the DOM
 const menuIcon = document.getElementById('menu-icon');
 const userMenu = document.getElementById('user-menu');
 const userMenuItems = document.querySelectorAll("#user-menu a")
+const textHolder = document.getElementById("random-text")
+const typingBoxElm = document.getElementById("typing-box")
+const timerConter = document.getElementById("timer")
+const modalElem = document.getElementById("result")
+const wordCount = document.getElementById("word-count")
+const elapsedTime = document.getElementById("elapsed-time")
+const resultText = document.getElementById("result-text")
+const closeModal = document.querySelector(".close-btn")
+const resetBtn = document.getElementById("reset")
 
-// Toggle menu on click
+let mainText = null
+let isFirstType = true
+let miliSeconds = 0;
+let seconds = 0;
+let stopwatch;
+
+// Toggle user menu on click
 menuIcon.addEventListener('click', () => {
     menuIcon.classList.toggle('open');
     userMenu.classList.toggle('d-block');
 });
-//Alert users when clicking on menu links (for unavailable sections)
+
+// Alert users when clicking on unavailable menu links
 userMenuItems.forEach(link => {
     link.addEventListener("click", (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
         alert("This section is not available yet!");
     });
 });
+
+// Select a random text from the array and display it
+function textFaind() {
+    let randomTextNum = Math.floor(Math.random() * texts.length);
+    mainText = texts[randomTextNum]
+    textHolder.innerHTML = mainText
+}
+
+// Start the timer when typing begins
+function timer() {
+    stopwatch = setInterval(() => {
+        miliSeconds++;
+        if (miliSeconds > 99) {
+            seconds++;
+            miliSeconds = 0;
+        }
+        timerConter.innerHTML = `${seconds.toString().padStart(2, "0")}:${miliSeconds.toString().padStart(2, "0")}`;
+    }, 10);
+}
+
+// Display results in the modal
+function showresult() {
+    let countOfDigits = mainText.replace(/[.,!?]/g, "").trim().split(/\s+/).length;
+    wordCount.innerHTML = `${countOfDigits} <br/> words.`
+    elapsedTime.innerHTML = `${seconds}:${miliSeconds} <br/> seconds.`
+    resultText.innerHTML = `You typed ${countOfDigits} words in ${seconds} seconds and ${miliSeconds} mili seconds.`
+
+    // Show the modal
+    if (modalElem.style.display !== 'block') {
+        modalElem.style.display = 'block';
+    }
+}
+
+// Validate typed text and update input border color
+function textValidation() {
+    if (isFirstType) {
+        timer()
+        isFirstType = false
+    }
+    let typedText = typingBoxElm.value
+    let finalText = mainText.substring(0, typedText.length)
+
+    if (typedText == finalText) {
+        typingBoxElm.style.border = '3px solid  rgb(247, 215, 52)' // Yellow for correct typing
+    } else {
+        typingBoxElm.style.border = '3px solid  rgb(247, 52, 52)' // Red for incorrect typing
+    }
+
+    // Check if the typing is complete
+    if (typedText === mainText) {
+        typingBoxElm.style.border = '3px solid rgba(52, 247, 117)' // Green for completion
+        clearInterval(stopwatch)
+        showresult()
+    }
+}
+
+// Hide the result modal
+function hidModal() {
+    modalElem.style.display = 'none'
+}
+
+// Reset typing test (new text, reset timer, clear input)
+function refresh() {
+    textFaind()
+    typingBoxElm.value = ''
+    clearInterval(stopwatch)
+    isFirstType = true
+    seconds = 0
+    miliSeconds = 0
+    timerConter.innerHTML = '00:00'
+    typingBoxElm.style.border = '3px solid  rgb(247, 215, 52)' // Reset border color
+    if (modalElem.style.display == 'block') {
+        modalElem.style.display = 'none';
+    }
+}
+
+// Event listeners
+window.addEventListener('load', textFaind()) // Load a random text on page load
+typingBoxElm.addEventListener('keyup', textValidation)
+typingBoxElm.addEventListener('paste', (e) => { e.preventDefault() }) // Prevent pasting into input
+closeModal.addEventListener('click', hidModal)
+resetBtn.addEventListener('click', refresh)
